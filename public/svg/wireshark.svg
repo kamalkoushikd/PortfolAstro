@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   role="img"
+   viewBox="0 0 24 24"
+   id="Wireshark--Streamline-Simple-Icons"
+   height="24"
+   width="24"
+   version="1.1"
+   sodipodi:docname="Wireshark--Streamline-Simple-Icons.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="31.416667"
+     inkscape:cx="12"
+     inkscape:cy="15.214854"
+     inkscape:window-width="1920"
+     inkscape:window-height="997"
+     inkscape:window-x="0"
+     inkscape:window-y="40"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Wireshark--Streamline-Simple-Icons">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="24"
+       height="24"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <desc
+     id="desc1">Wireshark Streamline Icon: https://streamlinehq.com</desc>
+  <title
+     id="title1">Wireshark</title>
+  <rect
+     style="fill:#1679c4;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round"
+     id="rect1"
+     width="22.417599"
+     height="22.112391"
+     x="0.7461347"
+     y="0.99223113"
+     ry="1.9577689" />
+  <path
+     d="M 2.95,0 C 1.33,0 0,1.32 0,2.95 v 18.1 C 0,22.68 1.32,24 2.95,24 h 18.1 C 22.67,24 24,22.68 24,21.05 V 2.95 C 23.99976,1.32 22.68,0 21.05,0 Z m 0,1.09 h 18.1 c 1.04,0 1.85,0.818 1.85,1.86 v 14 H 17.63 C 17.295,16.154 15.06,10.48 17.913,6.05 A 0.516,0.517 0 0 0 17.47,5.256 c -5.24,0.0827 -8.2,3.19 -9.74,6.21 -1.35,2.64 -1.63,4.91 -1.69,5.53 H 1.09 v -14 c 0,-1.04 0.817,-1.86 1.85,-1.86 z m 13.6,5.24 c -2.62,5.24 0.248,11.4 0.248,11.4 a 0.516,0.517 0 0 0 0.469,0.301 h 5.62 v 3.05 c 0,1.04 -0.817,1.86 -1.85,1.86 h -18.1 c -1.04,0 -1.85,-0.818 -1.85,-1.86 v -3.05 h 5.39 a 0.516,0.517 0 0 0 0.514,-0.477 c 0,0 0.226,-2.8 1.66,-5.62 1.34,-2.62 3.67,-5.17 7.91,-5.57 z"
+     fill="#000000"
+     stroke-width="1"
+     id="path1" />
+</svg>
