@@ -39,17 +39,19 @@ const SkillsList = () => {
   const skills = {
     "Web Development": [
       "Single Page Applications (SPAs)",
+        "Multi-page applications (MPAs)",
       "Landing pages and business websites",
       "Portfolio websites",
     ],
     "Mobile Development": [
       "Mobile-friendly web apps",
-      "React Native mobile apps",
+      "Native Android apps",
     ],
-    "UI/UX Design & Prototyping": [
-      "UI design with Figma & Canva",
-      "UX research & improvements",
-      "Prototyping for websites & mobile apps",
+    "Cybersecurity": [
+        "Penetration Testing",
+        "Web Application Security",
+        "Network Security",
+        "Cryptography",
     ],
   };
 
