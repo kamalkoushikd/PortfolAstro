@@ -6,7 +6,17 @@ import SkillsList from "../React/SkillsList.tsx";
 
 <section class="text-[var(--white)] mt-12 md:mt-0" id="home">
   <div class="max-w-5xl mx-auto space-y-8 md:py-36 pb-14">
-    <div class="text-left space-y-4">
+    <div class="relative overflow-hidden p-6 rounded-2xl">
+    <div class="absolute inset-0 -z-10">
+      <img
+          src="/hero.jpg"
+          alt="Hero background"
+          class="w-full h-full object-cover"
+      />
+      <!-- Optional dark overlay for contrast -->
+       <div class="absolute inset-0 bg-black/75" />
+    </div>
+    <div class=" relative z-10 text-left space-y-4">
       <p class="text-md md:text-lg text-[var(--white-icon)] shiny-white">
         Hi, I'm Kamal Koushik Duppalapudi
       </p>
@@ -79,6 +89,7 @@ import SkillsList from "../React/SkillsList.tsx";
             ></path>
           </svg>
         </a>
+      </div>
       </div>
     </div>
 
