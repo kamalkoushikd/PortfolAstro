@@ -1,51 +1,46 @@
-'use client'
-
+// src/components/ResumeDownloadButton.jsx
+// NB: This is still less ideal than a plain Astro component with an <a> tag if DRM is an issue.
 import { useState } from 'react';
 import { Download } from 'lucide-react';
 
 export default function ResumeDownloadButton({ resumeUrl = '/resume.pdf', fileName = 'resume.pdf' }) {
-    const [isDownloading, setIsDownloading] = useState(false);
+    // The isDownloading state with a direct <a> tag is tricky because
+    // you don't get easy success/failure callbacks.
+    // For a simple download link, this state is often omitted.
+    const [isClicked, setIsClicked] = useState(false);
 
-    const handleDownload = async () => {
-        try {
-            setIsDownloading(true);
-            const response = await fetch(resumeUrl);
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } catch (error) {
-            console.error('Download failed:', error);
-        } finally {
-            setIsDownloading(false);
-        }
+    const handleClick = () => {
+        setIsClicked(true);
+        // We can't reliably know when the download starts or finishes with a simple <a> tag.
+        // So, we just set a flag and maybe reset it after a timeout if needed.
+        // Or, more simply, don't disable the button, as the browser handles multiple clicks fine.
+        // For this example, let's just acknowledge the click.
+        setTimeout(() => setIsClicked(false), 2000); // Reset after 2s, purely cosmetic
     };
 
     return (
-        <button
-            onClick={handleDownload}
-            disabled={isDownloading}
+        <a
+            href={resumeUrl}
+            download={fileName}
+            onClick={handleClick} // You can still have an onClick
             style={{
-                backgroundColor: '#5797ff', // Tailwind CSS blue-900
+                backgroundColor: isClicked ? '#5797ff' : '#2563eb', // Slightly darker when "active"
                 color: 'white',
+                width: 'fit-content',
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
                 border: 'none',
-                cursor: isDownloading ? 'not-allowed' : 'pointer',
+                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
                 fontWeight: '600',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                textDecoration: 'none',
+                opacity: isClicked ? 0.7 : 1, // Visual feedback
             }}
         >
-            {isDownloading ? 'Downloading...' : <><Download /> Download Resume</>}
-        </button>
+            {isClicked ? 'Starting...' : <><Download size={20} /> Download Resume</>}
+        </a>
     );
 }
