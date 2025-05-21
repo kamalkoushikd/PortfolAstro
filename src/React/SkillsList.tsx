@@ -45,6 +45,7 @@ const SkillsList = () => {
         "Multi-page applications (MPAs)",
       "Landing pages and business websites",
       "Portfolio websites",
+        "High Performance Backends",
     ],
     "Mobile Development": [
       "Mobile-friendly web apps",
