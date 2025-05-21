@@ -1,3 +1,8 @@
+---
+import ResumeDownloadButton from "../React/ResumeDownloadButton";
+---
+
+
 <section id="contact" class="w-full py-12 border-t border-[#ffffff10]">
   <div class="max-w-5xl mx-auto">
     <h2 class="text-lg text-[var(--sec)] mb-2 shiny-sec">Let's talk</h2>
@@ -13,8 +18,11 @@
           <span>Location:</span>
           <span class="text-[var(--white)]">Hyderabad, Telangana, India</span>
         </div>
-        <div class="px-3 py-1 bg-[#5797ff] w-fit h-fit">
-          <a>Helo</a>
+        <div class="mt-10">
+          <ResumeDownloadButton
+            resumeUrl="/resume.pdf"
+            fileName="resume.pdf"
+          />
         </div>
       </div>
 
@@ -92,4 +100,6 @@
       alert("There was a problem sending your message.");
     }
   });
+
+
 </script>
