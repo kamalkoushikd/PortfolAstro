@@ -15,7 +15,7 @@
     "@astrojs/tailwind": "^6.0.2",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
-    "astro": "^5.7.13",
+    "astro": "^5.9.3",
     "firebase": "^11.7.3",
     "lucide-react": "^0.511.0",
     "ogl": "^1.0.11",
