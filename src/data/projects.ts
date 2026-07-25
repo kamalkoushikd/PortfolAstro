@@ -38,8 +38,19 @@ export const projects: Project[] = [
     summary:
       "A GPU governor that learns when it can clock your card down without costing you throughput.",
     detail:
-      "Telemetry from NVML and DCGM goes into a TCN encoder, that feeds a DQN policy, and the policy pins SM and memory clocks through a control daemon. Anything device specific gets discovered at runtime instead of hardcoded: the clock grid, power and thermal limits, which telemetry fields exist, the normalisation scales. Point it at a different card and it works out the numbers itself. The C++ daemon and the Python trainer talk over ZeroMQ.",
-    tags: ["C++", "PyTorch", "NVML / DCGM", "ZeroMQ", "Reinforcement learning"],
+      "A learned power-management policy for GPUs, driven by live device telemetry and tuned to hold throughput while cutting draw. Portable across cards without per-device tuning. Proprietary, so the internals stay off this page.",
+    tags: ["C++", "PyTorch", "Reinforcement learning"],
+    featured: true,
+  },
+  {
+    title: "WattWiseC",
+    kind: "Systems / RL",
+    year: "2026",
+    status: "Private",
+    summary: "The same bet, taken one level further down the machine.",
+    detail:
+      "A learned power policy for CPUs, sitting close enough to the hardware to act on what it sees without waiting on userspace. Trained offline, shipped as a compiled model, and left to run on its own. Proprietary, so the internals stay off this page.",
+    tags: ["C", "Linux", "Reinforcement learning"],
     featured: true,
   },
   {
