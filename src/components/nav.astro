@@ -1,215 +1,283 @@
 ---
-interface NavItem {
-  label: string;
-  href: string;
-  icon: string;
-}
-// const resume_svg = ``
-const navItems: NavItem[] = [
-  {
-    label: "Home",
-    href: "#home",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM19 19V9.97815L12 4.53371L5 9.97815V19H19Z"></path></svg>`,
-  },
-  {
-    label: "Projects",
-    href: "#projects",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M4 5V19H20V7H11.5858L9.58579 5H4ZM12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5Z"></path></svg>`,
-  },
-  {
-    label: "Contact",
-    href: "#contact",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21.7267 2.95694L16.2734 22.0432C16.1225 22.5716 15.7979 22.5956 15.5563 22.1126L11 13L1.9229 9.36919C1.41322 9.16532 1.41953 8.86022 1.95695 8.68108L21.0432 2.31901C21.5716 2.14285 21.8747 2.43866 21.7267 2.95694ZM19.0353 5.09647L6.81221 9.17085L12.4488 11.4255L15.4895 17.5068L19.0353 5.09647Z"></path></svg>`,
-  },
+const navItems = [
+  { label: "Work", href: "#work" },
+  { label: "Repositories", href: "#repositories" },
+  { label: "Toolkit", href: "#toolkit" },
+  { label: "Contact", href: "#contact" },
 ];
 ---
 
-<div class="flex justify-center w-full">
-  <nav
-    id="main-nav"
-    class="fixed left-1/2 -translate-x-1/2 z-[100] bg-[var(--background)] border border-1 border-transparent backdrop-blur-xl transition-all duration-500 ease-in-out md:top-6 md:bottom-auto bottom-0 w-[80%]"
-  >
-    <div class="container mx-auto flex justify-center items-center p-3">
-      <ul
-        class="flex w-full justify-between md:space-x-6 md:justify-center md:gap-12 gap-6"
+<header id="site-header" class="fixed top-0 left-0 right-0 z-[100]">
+  <div class="shell">
+    <div
+      class="flex items-center justify-between h-16 md:h-20 border-b border-transparent transition-colors duration-300"
+      id="header-inner"
+    >
+      <a
+        href="#top"
+        class="mono text-[0.8125rem] tracking-tight hover:opacity-60 transition-opacity"
+        style="color: var(--fg)"
       >
-        {
-          navItems.map((item) => (
-            <li class="flex-1 md:flex-none">
-              <a
-                href={item.href}
-                class="flex flex-col items-center gap-1 text-[var(--white-icon)] transition-colors text-xs md:text-base relative group"
-              >
-                <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-300 scale-0 opacity-0 bg-[#A9FF5B] nav-indicator hidden md:block" />
-                <span class="md:hidden flex items-center justify-center w-6 h-6">
-                  <fragment set:html={item.icon} />
-                </span>
-                <span class="hidden md:inline-block">{item.label}</span>
-                <span class="md:hidden">{item.label}</span>
-              </a>
-            </li>
-          ))
-        }
-    <!--    <li class="flex-1 md:flex-none">-->
-    <!--      <a-->
-    <!--          href="https://old.kamalkoushikd.cfd"-->
-    <!--          class="flex items-center justify-center gap-1 px-3 py-1.5 bg-[#5797ff] rounded-full text-white font-medium text-xs md:text-base transition-colors hover:bg-[#4882d9]"-->
-    <!--      >-->
-    <!--<span class="flex items-center justify-center w-5 h-5">-->
-    <!--  <svg-->
-    <!--      viewBox="0 0 128 128"-->
-    <!--      xmlns="http://www.w3.org/2000/svg"-->
-    <!--      fill="currentColor"-->
-    <!--      class="w-4 h-4 md:w-5 md:h-5"-->
-    <!--  >-->
-    <!--    <path d="M87.85 6.19H16.8v115.45h94.62V28.8z"></path>-->
-    <!--    <g fill="none" stroke="currentColor" stroke-width="3.865" stroke-linecap="round" stroke-miterlimit="10">-->
-    <!--      <path d="M33.34 41.05H94.5"></path>-->
-    <!--      <path d="M33.34 55.68H94.5"></path>-->
-    <!--      <path d="M33.34 70.3H94.5"></path>-->
-    <!--      <path d="M33.34 84.93H94.5"></path>-->
-    <!--      <path d="M33.34 99.56h26.15"></path>-->
-    <!--    </g>-->
-    <!--    <path d="M109.45 23.59L92.79 6.88A10.555 10.555 0 0 0 85.54 4h-68.5c-1.55 0-2.81 1.26-2.81 2.81v114.38c0 1.55 1.26 2.81 2.81 2.81h93.93c1.55 0 2.81-1.26 2.81-2.81V31.28c-.01-2.91-2.21-5.69-4.33-7.69zm.32 96.41H18.23V8h64.66c2.12 0 3.85 1.72 3.85 3.85v17.88h17.34c3.14 0 5.69 1.73 5.69 5.69V120z"></path>-->
-    <!--  </svg>-->
-    <!--</span>-->
-    <!--        <span>Resume</span>-->
-    <!--      </a>-->
-    <!--    </li>-->
+        kamal&nbsp;koushik<span style="color: var(--accent)">.</span>
+      </a>
 
-      </ul>
+      <nav class="flex items-center gap-6 md:gap-9">
+        <ul class="hidden md:flex items-center gap-8">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="nav-link link-underline text-[0.8125rem] transition-colors"
+                  style="color: var(--muted)"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
 
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="Toggle colour theme"
+          class="grid place-items-center size-8 rounded-full transition-colors"
+          style="color: var(--muted)"
+        >
+          <svg
+            class="size-[1.05rem] icon-sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          >
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+            ></path>
+          </svg>
+          <svg
+            class="size-[1.05rem] icon-moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+          </svg>
+        </button>
+
+        <a
+          href="#contact"
+          class="hidden md:inline-flex items-center h-9 px-4 text-[0.8125rem] rounded-full border transition-colors duration-300"
+          style="border-color: var(--line-strong); color: var(--fg)"
+          id="nav-cta"
+        >
+          Get in touch
+        </a>
+
+        <button
+          id="menu-toggle"
+          type="button"
+          class="md:hidden grid place-items-center size-8"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span class="burger"></span>
+        </button>
+      </nav>
     </div>
-  </nav>
+  </div>
+</header>
+
+<div id="mobile-menu" class="md:hidden" hidden>
+  <div class="shell pt-28 pb-12">
+    <ul class="space-y-1">
+      {
+        navItems.map((item) => (
+          <li>
+            <a href={item.href} class="menu-link display block py-3 text-4xl">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href="mailto:kamalkoushik24@gmail.com"
+      class="menu-link mono block mt-10 text-sm"
+    >
+      kamalkoushik24@gmail.com
+    </a>
+  </div>
 </div>
+
 <style>
-  nav {
-    transform: translateX(-50%);
-    background-color: var(--background);
+  #site-header {
+    backdrop-filter: blur(12px);
+    background-color: transparent;
+    transition: background-color 0.35s ease;
+  }
+
+  #site-header.stuck {
+    background-color: color-mix(in srgb, var(--bg) 82%, transparent);
+  }
+
+  #site-header.stuck #header-inner {
+    border-bottom-color: var(--line);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--fg) !important;
+  }
+
+  #theme-toggle:hover {
+    color: var(--fg);
+    background-color: var(--accent-soft);
+  }
+
+  #nav-cta:hover {
+    background-color: var(--fg);
+    color: var(--bg) !important;
+    border-color: var(--fg);
+  }
+
+  :global(:root[data-theme="light"]) .icon-moon,
+  :global(:root[data-theme="dark"]) .icon-sun {
+    display: none;
+  }
+
+  /* Two-line burger that folds into a cross when the menu is open. */
+  .burger,
+  .burger::before,
+  .burger::after {
+    display: block;
+    width: 18px;
+    height: 1px;
+    background-color: var(--fg);
     transition:
-      background-color 0.3s ease,
-      border-radius 0.3s ease,
-      border-color 0.3s ease;
+      transform 0.3s ease,
+      opacity 0.2s ease;
   }
 
-  nav.scrolling {
-    background-color: var(--component-bg);
-    border-color: #ffffff10;
-    border-radius: 9999px;
+  .burger::before,
+  .burger::after {
+    content: "";
+    position: absolute;
   }
 
-  nav a.active .nav-indicator {
-    transform: translateY(-50%) scale(1);
-    opacity: 1;
+  .burger {
+    position: relative;
+    background-color: transparent;
   }
 
-  nav a.active {
-    color: white !important;
+  .burger::before {
+    transform: translateY(-4px);
   }
 
-  @media (max-width: 767px) {
-    nav {
-      width: 100% !important;
-      transform: translateX(-50%);
-      bottom: 0;
-      left: 50%;
-      position: fixed;
-      border-radius: 1rem 1rem 0 0;
-      border-color: #ffffff10;
+  .burger::after {
+    transform: translateY(4px);
+  }
+
+  #menu-toggle[aria-expanded="true"] .burger::before {
+    transform: rotate(45deg);
+  }
+
+  #menu-toggle[aria-expanded="true"] .burger::after {
+    transform: rotate(-45deg);
+  }
+
+  #mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background-color: var(--bg);
+    animation: menu-in 0.3s ease;
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
     }
-
-    nav.scrolling {
-      border-radius: 1rem 1rem 0 0;
-      background-color: var(--component-bg);
-    }
-
-    body {
-      padding-bottom: 70px;
-    }
-  }
-  @media (max-width: 767px) {
-    body {
-      padding-bottom: 70px;
+    to {
+      opacity: 1;
     }
   }
 
-  nav a.active {
-    color: white !important;
+  .menu-link {
+    color: var(--fg);
+    transition: color 0.3s ease;
+  }
+
+  .menu-link:active {
+    color: var(--accent);
   }
 </style>
 
 <script>
-  const nav = document.getElementById("main-nav");
-  const maxScroll = 1000;
-  let rafId: number | null = null;
+  const header = document.getElementById("site-header");
 
-  function updateNav() {
-    if (window.scrollY > 0) {
-      nav?.classList.add("scrolling");
+  const onScroll = () => {
+    header?.classList.toggle("stuck", window.scrollY > 12);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
 
-      const scrollProgress = Math.min(window.scrollY / maxScroll, 1);
-      const easeProgress = 1 - Math.pow(1 - scrollProgress, 4);
+  // Theme toggle. The initial value is resolved inline in the <head>.
+  const toggle = document.getElementById("theme-toggle");
+  toggle?.addEventListener("click", () => {
+    const next =
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "light"
+        : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+  });
 
-      const minWidth = 528;
-      const maxWidth = window.innerWidth * 0.8;
-      const currentWidth = maxWidth - (maxWidth - minWidth) * easeProgress;
+  // Mobile menu.
+  const menuToggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
 
-      if (window.innerWidth >= 768) {
-        nav?.style.setProperty("width", `${currentWidth}px`);
-      }
-    } else {
-      nav?.classList.remove("scrolling");
-      nav?.style.setProperty("width", "80%");
-    }
-    rafId = null;
-  }
+  const setMenu = (open: boolean) => {
+    menu!.hidden = !open;
+    menuToggle?.setAttribute("aria-expanded", String(open));
+    menuToggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.body.style.overflow = open ? "hidden" : "";
+  };
 
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!rafId) {
-        rafId = requestAnimationFrame(updateNav);
-      }
-    },
-    { passive: true }
+  menuToggle?.addEventListener("click", () => {
+    setMenu(menu!.hidden);
+  });
+
+  menu?.querySelectorAll("a").forEach((link) =>
+    link.addEventListener("click", () => setMenu(false))
   );
 
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      const target = e.currentTarget as HTMLAnchorElement;
-      const targetId = target.getAttribute("href")?.substring(1) || "";
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    });
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !menu!.hidden) setMenu(false);
   });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll("nav a[href^='#']");
-    const observerOptions = { threshold: 0.3 };
+  // Highlight whichever section is currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
+  const sections = document.querySelectorAll<HTMLElement>("section[id]");
 
-    const observerCallback = (entries) => {
+  const spy = new IntersectionObserver(
+    (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          navLinks.forEach((link) => link.classList.remove("active"));
-          const id = entry.target.getAttribute("id");
-          const activeLink = document.querySelector(`nav a[href="#${id}"]`);
-          if (activeLink) {
-            activeLink.classList.add("active");
-          }
-        }
+        if (!entry.isIntersecting) return;
+        const id = entry.target.getAttribute("id");
+        links.forEach((link) =>
+          link.classList.toggle("active", link.getAttribute("href") === `#${id}`)
+        );
       });
-    };
-
-    const observer = new IntersectionObserver(
-      observerCallback,
-      observerOptions
-    );
-    sections.forEach((section) => observer.observe(section));
-  });
+    },
+    { threshold: 0.25 }
+  );
+  sections.forEach((section) => spy.observe(section));
 </script>

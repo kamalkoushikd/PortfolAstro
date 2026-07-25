@@ -1,0 +1,189 @@
+---
+import { projects } from "../data/projects";
+
+const numberWords = [
+  "No",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+];
+const count = numberWords[projects.length] ?? String(projects.length);
+---
+
+<section id="work" class="py-16 md:py-28 rule">
+  <div class="shell">
+    <div
+      class="flex flex-wrap items-end justify-between gap-6 pb-10 md:pb-16"
+    >
+      <div>
+        <p class="eyebrow reveal">Selected work</p>
+        <h2 class="display reveal mt-5 text-[clamp(2rem,5vw,4rem)]">
+          {count} things worth<br class="hidden md:block" /> reading the source of.
+        </h2>
+      </div>
+      <p
+        class="reveal max-w-xs text-sm"
+        style="color: var(--muted); transition-delay: 80ms"
+      >
+        Some are public, some are still private. All of them are mine end to
+        end.
+      </p>
+    </div>
+
+    <ol>
+      {
+        projects.map((project, i) => (
+          <li class="project-row reveal border-t" style="border-color: var(--line)">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 py-8 md:py-12">
+              <div class="md:col-span-4">
+                <div class="flex items-start gap-4">
+                  <span class="eyebrow pt-2 tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 class="project-title display text-[clamp(1.6rem,2.6vw,2.35rem)]">
+                      {project.title}
+                    </h3>
+                    <p class="mt-2 text-[0.8125rem]" style="color: var(--muted)">
+                      {project.kind} · {project.year}
+                    </p>
+                    <span class="status-pill mono mt-3">{project.status}</span>
+                  </div>
+                </div>
+
+                {(project.repo || project.live) && (
+                  <div class="flex flex-wrap gap-x-5 gap-y-2 mt-5 md:ml-[3.25rem]">
+                    {project.repo && (
+                      <a
+                        href={project.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="row-link link-underline mono text-[0.75rem]"
+                      >
+                        Source ↗
+                      </a>
+                    )}
+                    {project.live && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="row-link link-underline mono text-[0.75rem]"
+                      >
+                        Live site ↗
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div class="md:col-span-5">
+                <p class="text-lg md:text-xl leading-snug">{project.summary}</p>
+                <p class="mt-4 text-sm leading-relaxed" style="color: var(--muted)">
+                  {project.detail}
+                </p>
+                <ul class="flex flex-wrap gap-x-4 gap-y-1 mt-5">
+                  {project.tags.map((tag) => (
+                    <li class="mono text-[0.7rem]" style="color: var(--faint)">
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="md:col-span-3">
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    decoding="async"
+                    class="project-thumb w-full aspect-[4/3] object-cover rounded-sm"
+                  />
+                ) : (
+                  <div class="project-plate w-full aspect-[4/3] rounded-sm grid place-items-center">
+                    <span class="display text-[2.5rem]" style="color: var(--line-strong)">
+                      {project.title.slice(0, 2).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .project-row {
+    transition: background-color 0.4s ease;
+  }
+
+  .project-row:hover {
+    background-color: var(--bg-raised);
+  }
+
+  .project-title {
+    transition: color 0.3s ease;
+  }
+
+  .project-row:hover .project-title {
+    color: var(--accent);
+  }
+
+  .status-pill {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--muted);
+  }
+
+  .row-link {
+    color: var(--fg);
+  }
+
+  .row-link:hover {
+    color: var(--accent);
+  }
+
+  .project-thumb {
+    filter: grayscale(1) contrast(1.05);
+    opacity: 0.85;
+    transition:
+      filter 0.5s ease,
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+
+  .project-row:hover .project-thumb {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.01);
+  }
+
+  .project-plate {
+    background: repeating-linear-gradient(
+      135deg,
+      var(--bg-raised),
+      var(--bg-raised) 7px,
+      var(--accent-soft) 7px,
+      var(--accent-soft) 8px
+    );
+    border: 1px solid var(--line);
+  }
+</style>

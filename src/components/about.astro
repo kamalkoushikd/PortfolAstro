@@ -1,0 +1,66 @@
+---
+const metrics = [
+  { value: "18", label: "Core team led at Kludge" },
+  { value: "2", label: "CTFs run end to end" },
+  { value: "150+", label: "Participants hosted" },
+  { value: "369", label: "of 11,517 teams, picoCTF 2024" },
+];
+---
+
+<section id="about" class="py-16 md:py-28 rule">
+  <div class="shell">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <div class="lg:col-span-3">
+        <p class="eyebrow reveal">About</p>
+      </div>
+
+      <div class="lg:col-span-9">
+        <h2
+          class="display reveal text-[clamp(1.75rem,3.4vw,3rem)] max-w-4xl"
+          style="line-height: 1.14"
+        >
+          Most of what I enjoy sits under the abstraction, where you can still
+          measure what you changed.
+        </h2>
+
+        <div
+          class="reveal mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl"
+          style="transition-delay: 80ms; color: var(--muted)"
+        >
+          <p>
+            I'm a Chemical Engineering undergraduate at IIT Hyderabad, though
+            most of my time goes into C++, Rust, Go and Python. Transport
+            protocols, control loops for GPU power, cryptography on small
+            hardware. Every project here started because a benchmark or a threat
+            model annoyed me enough to do something about it.
+          </p>
+          <p>
+            The other half is offensive security. I lead Kludge, IIT Hyderabad's
+            InfoSec and Networking club. That has meant running multi-phase
+            penetration testing and network assessment projects, designing and
+            hosting two full CTFs across web, crypto, pwn and forensics, and a
+            lot of hands-on sessions with the core team.
+          </p>
+        </div>
+
+        <dl
+          class="reveal mt-12 md:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10"
+          style="transition-delay: 140ms"
+        >
+          {
+            metrics.map((metric) => (
+              <div class="border-t pt-4" style="border-color: var(--line)">
+                <dt class="display text-[clamp(2rem,4vw,3.25rem)]">
+                  {metric.value}
+                </dt>
+                <dd class="mt-2 text-[0.8125rem]" style="color: var(--muted)">
+                  {metric.label}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

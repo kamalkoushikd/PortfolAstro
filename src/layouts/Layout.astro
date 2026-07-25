@@ -1,100 +1,235 @@
 ---
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Kamal Koushik Duppalapudi. Systems, security and low-level engineering: transport protocols, GPU power management, embedded cryptography.",
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Software Developer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" style="width:32px; height:32px; border-radius: 50%;" />
-    <meta property="og:title" content="Kamal Koushik Duppalapudi" />
-    <meta property="og:description" content="Software Developer & Cybersecurity Analyst" />
-    <!--<meta property="og:image" content="https://oscarhernandez.vercel.app/og.image.png" />-->
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content="https://portfol-astro.vercel.app" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Kamal Koushik Duppalapudi Portfolio" />
+    <meta property="og:site_name" content="Kamal Koushik Duppalapudi" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    />
-    <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      media="print"
-      onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      />
-    </noscript>
 
     <title>{title}</title>
+
+    <script is:inline>
+      // Resolve the theme before first paint so there is no flash.
+      const stored = localStorage.getItem("theme");
+      const preferred =
+        stored ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light");
+      document.documentElement.setAttribute("data-theme", preferred);
+    </script>
   </head>
-  <body class="bg-[--background] md:px-48 lg:px-20 px-9">
+  <body>
+    <a href="#work" class="skip-link">Skip to content</a>
     <slot />
   </body>
 </html>
 
 <style is:global>
-  :root {
-    --background: #101010;
-    --sec: #5797ff;
-    --white: #dfdfdf;
-    --white-icon: #f3f3f398;
-    --white-icon-tr: #f3f3f310;
+  :root,
+  :root[data-theme="light"] {
+    --bg: #fbfaf7;
+    --bg-raised: #ffffff;
+    --fg: #14120f;
+    --muted: #6d675e;
+    --faint: #989186;
+    --line: #e4dfd6;
+    --line-strong: #cdc6b9;
+    --accent: #1f4b45;
+    --accent-soft: #e8efec;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0d0d0c;
+    --bg-raised: #141412;
+    --fg: #f2efe9;
+    --muted: #989286;
+    --faint: #6d675e;
+    --line: #24231f;
+    --line-strong: #37352f;
+    --accent: #9dc4bb;
+    --accent-soft: #17201e;
   }
 
   * {
-    font-family:
-      "montserrat",
-      -apple-system,
-      system-ui,
-      sans-serif;
     box-sizing: border-box;
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 
-  *::selection {
-    background-color: var(--sec);
-    color: var(--background);
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
-  /* Scrollbar styles */
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: "Inter", -apple-system, system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .display {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+  }
+
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  /* Small uppercase labels, the spine running down the page. */
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 74rem;
+    margin: 0 auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 3rem;
+    }
+  }
+
+  .rule {
+    border-top: 1px solid var(--line);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--fg);
+    color: var(--bg);
+    padding: 0.75rem 1rem;
+    z-index: 200;
+  }
+
+  .skip-link:focus {
+    left: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Underline that draws itself in on hover. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    padding-bottom: 1px;
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.shown {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
   ::-webkit-scrollbar {
-    width: 15px;
+    width: 10px;
   }
-
   ::-webkit-scrollbar-track {
-    background: var(--container);
-    border-radius: 30px;
+    background: var(--bg);
   }
-
   ::-webkit-scrollbar-thumb {
-    background: var(--background);
-    border-radius: 10px;
+    background: var(--line-strong);
   }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--pink);
-  }
-
-  /* Scrollbar styles for Firefox */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--line) var(--container);
+    scrollbar-color: var(--line-strong) var(--bg);
   }
 </style>
+
+<script>
+  const revealed = document.querySelectorAll(".reveal");
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("shown");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+  revealed.forEach((el) => io.observe(el));
+</script>

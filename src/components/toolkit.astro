@@ -1,0 +1,172 @@
+---
+interface Tool {
+  name: string;
+  icon?: string;
+}
+
+interface Group {
+  label: string;
+  note: string;
+  tools: Tool[];
+}
+
+const groups: Group[] = [
+  {
+    label: "Languages",
+    note: "Where most of the work happens",
+    tools: [
+      { name: "C++", icon: "/svg/C++.svg" },
+      { name: "Python", icon: "/svg/Python.svg" },
+      { name: "Rust" },
+      { name: "Go", icon: "/svg/Go.svg" },
+      { name: "TypeScript", icon: "/svg/typeScript.svg" },
+      { name: "Java", icon: "/svg/Java.svg" },
+      { name: "Kotlin", icon: "/svg/Kotlin.svg" },
+      { name: "Bash", icon: "/svg/bash.svg" },
+    ],
+  },
+  {
+    label: "Systems & infra",
+    note: "Build, ship, keep it running",
+    tools: [
+      { name: "Linux", icon: "/svg/Linux.svg" },
+      { name: "Docker", icon: "/svg/Docker.svg" },
+      { name: "AWS", icon: "/svg/AWS.svg" },
+      { name: "Azure", icon: "/svg/Azure.svg" },
+      { name: "Oracle Cloud", icon: "/svg/OracleCloud.svg" },
+      { name: "Nginx", icon: "/svg/Nginx.svg" },
+      { name: "Git", icon: "/svg/git.svg" },
+      { name: "MySQL", icon: "/svg/MySQL.svg" },
+      { name: "ZeroMQ" },
+      { name: "Protobuf" },
+    ],
+  },
+  {
+    label: "Web",
+    note: "The layer people actually see",
+    tools: [
+      { name: "React", icon: "/svg/react.svg" },
+      { name: "Next.js", icon: "/svg/nextjs.svg" },
+      { name: "Astro", icon: "/svg/astro.svg" },
+      { name: "Tailwind", icon: "/svg/tailwindcss.svg" },
+      { name: "FastAPI", icon: "/svg/FastAPI.svg" },
+      { name: "Django", icon: "/svg/Django.svg" },
+      { name: "Node.js", icon: "/svg/nodejs.svg" },
+      { name: "D3.js", icon: "/svg/D3js.svg" },
+      { name: "Three.js", icon: "/svg/Threejs.svg" },
+    ],
+  },
+  {
+    label: "Security",
+    note: "Offensive, mostly",
+    tools: [
+      { name: "Wireshark", icon: "/svg/wireshark.svg" },
+      { name: "Burp Suite", icon: "/svg/burpsuite.svg" },
+      { name: "Bettercap", icon: "/svg/bettercap.svg" },
+      { name: "Nmap", icon: "/nmap.png" },
+      { name: "Netcat", icon: "/netcat.png" },
+      { name: "Hashcat" },
+      { name: "Aircrack-ng" },
+    ],
+  },
+  {
+    label: "Data & hardware",
+    note: "Numbers, and the boards they run on",
+    tools: [
+      { name: "PyTorch" },
+      { name: "NumPy", icon: "/svg/NumPy.svg" },
+      { name: "Pandas", icon: "/svg/Pandas.svg" },
+      { name: "SciPy", icon: "/svg/SciPy.svg" },
+      { name: "Matplotlib", icon: "/svg/Matplotlib.svg" },
+      { name: "Jupyter", icon: "/svg/jupyter.svg" },
+      { name: "ESP32", icon: "/svg/ESP32.svg" },
+      { name: "Arduino", icon: "/svg/Arduino.svg" },
+      { name: "Raspberry Pi", icon: "/svg/RaspberryPi.svg" },
+      { name: "Blender", icon: "/svg/Blender.svg" },
+      { name: "SolidWorks", icon: "/svg/SolidWorks.svg" },
+    ],
+  },
+];
+---
+
+<section id="toolkit" class="py-16 md:py-28 rule">
+  <div class="shell">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <div class="lg:col-span-3">
+        <p class="eyebrow reveal">Toolkit</p>
+        <h2 class="display reveal mt-5 text-[clamp(1.8rem,3vw,2.6rem)]">
+          Tools, in rough order of hours spent.
+        </h2>
+      </div>
+
+      <div class="lg:col-span-9 space-y-10 md:space-y-12">
+        {
+          groups.map((group) => (
+            <div class="reveal border-t pt-6" style="border-color: var(--line)">
+              <div class="flex items-baseline gap-4 mb-6">
+                <h3 class="eyebrow">{group.label}</h3>
+                <p class="text-xs" style="color: var(--faint)">
+                  {group.note}
+                </p>
+              </div>
+              <ul class="flex flex-wrap gap-x-8 gap-y-6">
+                {group.tools.map((tool) => (
+                  <li class="tool flex items-center gap-2.5">
+                    {tool.icon && (
+                      <img
+                        src={tool.icon}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
+                        class="tool-icon size-5 object-contain"
+                      />
+                    )}
+                    <span class="text-sm">{tool.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tool {
+    color: var(--muted);
+    transition: color 0.3s ease;
+  }
+
+  .tool:hover {
+    color: var(--fg);
+  }
+
+  /* Desaturate every logo so the wall reads as one system; colour returns on
+     hover. Dark mode inverts instead of flattening, so dark-on-transparent
+     marks stay legible. */
+  .tool-icon {
+    /* Dimming after desaturating keeps near-white marks (Go, Bash, Astro)
+       visible on the light page; the dark theme inverts that result. */
+    filter: grayscale(1) brightness(0.55);
+    opacity: 0.8;
+    transition:
+      filter 0.35s ease,
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  :global(:root[data-theme="dark"]) .tool-icon {
+    filter: grayscale(1) brightness(0.55) invert(1);
+    opacity: 0.8;
+  }
+
+  .tool:hover .tool-icon,
+  :global(:root[data-theme="dark"]) .tool:hover .tool-icon {
+    filter: none;
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+</style>

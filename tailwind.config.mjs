@@ -3,15 +3,20 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
-      keyframes: {
-        scaleAnim: {
-          '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.1)' },
-          '100%': { transform: 'scale(1)' },
-        },
+      fontFamily: {
+        sans: ['"Inter"', "-apple-system", "system-ui", "sans-serif"],
+        display: ['"Instrument Serif"', "Georgia", "serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
       },
-      animation: {
-        scale: 'scaleAnim 300ms ease-in-out',
+      colors: {
+        // Mirrors the CSS custom properties defined in Layout.astro.
+        bg: "var(--bg)",
+        raised: "var(--bg-raised)",
+        fg: "var(--fg)",
+        muted: "var(--muted)",
+        faint: "var(--faint)",
+        line: "var(--line)",
+        accent: "var(--accent)",
       },
     },
   },
