@@ -1,0 +1,718 @@
+---
+/**
+ * Line-art laptop that boots itself, sitting behind the hero headline.
+ *
+ * Six-face CSS 3D boxes with real thickness — no images, no canvas. anime.js
+ * (3.2.1, from the CDN tag below) drives the lid hinge and the on-screen boot
+ * sequence, once, when the hero scrolls into view.
+ *
+ * Decorative: aria-hidden, pointer-events off, and hidden below md where it
+ * would fight the headline for space. Every colour derives from the theme
+ * tokens in Layout.astro, so it follows the light/dark toggle.
+ *
+ * Styles are `is:global` on purpose: the geometry is built in JS, so those
+ * nodes never receive Astro's scoping attribute. Hence the `lp-` prefix on
+ * every id and class — it keeps the global surface collision-free.
+ */
+---
+
+<div class="lp-mount" id="lp-mount" aria-hidden="true">
+  <div class="lp-stage">
+    <div class="lp-rig">
+      <div class="lp-machine" id="lp-machine"></div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .lp-mount {
+    /* faces pointing up catch the light; walls step away from it */
+    --lp-face: var(--bg);
+    --lp-wall-1: color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --lp-wall-2: color-mix(in srgb, var(--fg) 9%, var(--bg));
+    /* three weights of hairline, mixed off --fg so both themes hold up */
+    --lp-line: color-mix(in srgb, var(--fg) 38%, var(--bg));
+    --lp-soft: color-mix(in srgb, var(--fg) 24%, var(--bg));
+    --lp-faint: color-mix(in srgb, var(--fg) 14%, var(--bg));
+    --lp-scale: 0.46;
+
+    position: absolute;
+    top: -2.75rem;
+    left: -1.25rem;
+    z-index: 0;
+    display: none;
+    pointer-events: none;
+    opacity: 0.72;
+    transform: scale(var(--lp-scale));
+    transform-origin: 0 0;
+  }
+
+  :root[data-theme="dark"] .lp-mount {
+    --lp-face: color-mix(in srgb, var(--fg) 8%, var(--bg));
+    --lp-wall-1: color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --lp-wall-2: color-mix(in srgb, var(--fg) 3%, var(--bg));
+    opacity: 0.6;
+  }
+
+  @media (min-width: 768px) {
+    .lp-mount {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .lp-mount {
+      --lp-scale: 0.55;
+    }
+  }
+
+  /* The rig is a fixed camera — no orbit. The machine hangs off it. */
+  .lp-stage {
+    position: relative;
+    width: 720px;
+    height: 720px;
+    perspective: 2400px;
+    perspective-origin: 40% 56%;
+  }
+
+  .lp-rig {
+    position: absolute;
+    top: 68%;
+    left: 47%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(56deg) rotateZ(-34deg);
+  }
+
+  .lp-machine {
+    position: absolute;
+    transform-style: preserve-3d;
+    transform: translate3d(-280px, -190px, 0);
+  }
+
+  .lp-box {
+    position: absolute;
+    transform-style: preserve-3d;
+  }
+
+  .lp-face {
+    position: absolute;
+    transform-origin: 0 0;
+    overflow: hidden;
+  }
+
+  .lp-face svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Thickness reads from the two parallel hairlines of the top and bottom
+     outlines, not from a darker band — that band is what turns into a
+     harsh edge at grazing angles. */
+  .lp-face.lp-top {
+    background: var(--lp-face);
+    border-radius: 9px;
+  }
+  .lp-face.lp-bottom {
+    background: var(--lp-wall-2);
+    border-radius: 9px;
+  }
+  .lp-face.lp-side.lp-fb {
+    background: var(--lp-wall-1);
+  }
+  .lp-face.lp-side.lp-lr {
+    background: var(--lp-wall-2);
+  }
+
+  .lp-anchor,
+  .lp-barrel {
+    position: absolute;
+    transform-style: preserve-3d;
+  }
+
+  .lp-pivot {
+    position: absolute;
+    transform-style: preserve-3d;
+    transform-origin: 0 0;
+  }
+
+  .lp-facet {
+    position: absolute;
+    background: var(--lp-face);
+    border-top: 1px solid var(--lp-faint);
+    transform-origin: 50% 50%;
+  }
+
+  .lp-cap {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--lp-face);
+    border: 1px solid var(--lp-soft);
+    transform-origin: 50% 50%;
+  }
+
+  .lp-hair {
+    fill: none;
+    stroke: var(--lp-line);
+    stroke-width: 1;
+  }
+  .lp-hair-2 {
+    fill: none;
+    stroke: var(--lp-line);
+    stroke-width: 1.5;
+  }
+  .lp-hair-s {
+    fill: none;
+    stroke: var(--lp-soft);
+    stroke-width: 0.8;
+  }
+  .lp-hair-f {
+    fill: none;
+    stroke: var(--lp-faint);
+    stroke-width: 0.8;
+  }
+  .lp-fillp {
+    fill: var(--lp-face);
+    stroke: var(--lp-line);
+    stroke-width: 1;
+  }
+  .lp-solid {
+    fill: var(--lp-line);
+    stroke: none;
+  }
+  .lp-accent {
+    fill: var(--accent);
+    stroke: none;
+  }
+  .lp-lbl {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    fill: var(--lp-soft);
+  }
+</style>
+
+<script
+  is:inline
+  src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
+  crossorigin="anonymous"></script>
+
+<script>
+  // anime.js 3.2.1 comes from the CDN tag above. A classic <script src>
+  // without defer is guaranteed to have run before any module script, so the
+  // global is already in place here. To bundle it instead:
+  //   npm i animejs@3.2.1 -D @types/animejs
+  // then drop the tag above and `import anime from "animejs"`.
+  const anime = (window as any).anime;
+
+  const mount = document.getElementById("lp-mount");
+  const machine = document.getElementById("lp-machine");
+
+  if (anime && mount && machine) {
+    const NS = "http://www.w3.org/2000/svg";
+
+    const div = (cls: string, css: Record<string, string> = {}) => {
+      const d = document.createElement("div");
+      d.className = cls;
+      Object.assign(d.style, css);
+      return d;
+    };
+
+    /* =====================================================================
+       BOX BUILDER — six faces, real thickness.
+       Local space: x 0..w, y 0..d, z 0..h   (z = up off the deck)
+       ===================================================================== */
+    function makeBox(
+      w: number,
+      d: number,
+      h: number,
+      faces: Record<string, string>
+    ) {
+      const box = div("lp-box", { width: `${w}px`, height: `${d}px` });
+
+      const mk = (
+        name: string,
+        fw: number,
+        fh: number,
+        transform: string,
+        kind: string
+      ) => {
+        const f = div(`lp-face ${kind}`, {
+          width: `${fw}px`,
+          height: `${fh}px`,
+          transform,
+        });
+
+        let art = faces[name] || "";
+
+        // A wall gets ONE hairline, along its lower edge. That line plus the
+        // top face outline = two parallels = readable thickness. Three lines
+        // over a darker fill is what compressed into a hard edge before.
+        if (kind.startsWith("lp-side")) {
+          art =
+            `<line class="lp-hair-s" x1="0" y1="${fh - 0.5}" x2="${fw}" y2="${fh - 0.5}"/>` +
+            art;
+        }
+
+        if (art) {
+          const s = document.createElementNS(NS, "svg");
+          s.setAttribute("viewBox", `0 0 ${fw} ${fh}`);
+          s.setAttribute("preserveAspectRatio", "none");
+          s.innerHTML = art;
+          f.appendChild(s);
+        }
+
+        box.appendChild(f);
+      };
+
+      mk("top", w, d, `translateZ(${h}px)`, "lp-top");
+      mk("bottom", w, d, `translateY(${d}px) rotateX(180deg)`, "lp-bottom");
+      mk("back", w, h, `translateZ(${h}px) rotateX(-90deg)`, "lp-side lp-fb");
+      mk(
+        "front",
+        w,
+        h,
+        `translateY(${d}px) translateZ(${h}px) rotateX(-90deg)`,
+        "lp-side lp-fb"
+      );
+      mk(
+        "left",
+        d,
+        h,
+        `translateZ(${h}px) rotateZ(90deg) rotateX(-90deg)`,
+        "lp-side lp-lr"
+      );
+      mk(
+        "right",
+        d,
+        h,
+        `translateX(${w}px) translateZ(${h}px) rotateZ(90deg) rotateX(-90deg)`,
+        "lp-side lp-lr"
+      );
+
+      return box;
+    }
+
+    /* ================== dimensions ==================
+       AXIS_Z is set so that at exactly -180deg the lid's underside lands
+       0.6px above the deck top: flush, parallel, no wedge. */
+    const DECK_W = 560,
+      DECK_D = 380,
+      DECK_H = 16;
+    const LID_W = 560,
+      LID_D = 352,
+      LID_H = 10;
+    const AXIS_Y = 12;
+    const AXIS_Z = DECK_H + LID_H + 0.6;
+    const BARREL_R = 11,
+      BARREL_L = 430;
+
+    /* ================== deck artwork ================== */
+    function deckTopSVG() {
+      let out = `
+        <rect x="1" y="1" width="${DECK_W - 2}" height="${DECK_D - 2}" rx="9" class="lp-hair-2"/>
+        <rect x="9" y="9" width="${DECK_W - 18}" height="${DECK_D - 18}" rx="6" class="lp-hair-f"/>
+        <rect x="34" y="44" width="492" height="196" rx="4" class="lp-hair-f"/>
+        <line class="lp-hair-f" x1="34" y1="250" x2="526" y2="250"/>
+        <rect x="205" y="258" width="150" height="94" rx="6" class="lp-hair-s"/>
+        <rect x="211" y="264" width="138" height="82" rx="4" class="lp-hair-f"/>
+        <line class="lp-hair-f" x1="280" y1="340" x2="280" y2="346"/>
+      `;
+
+      // speaker grilles either side of the keyboard
+      for (let c = 0; c < 3; c++) {
+        for (let r = 0; r < 21; r++) {
+          out += `<circle class="lp-hair-f" cx="${16 + c * 6}" cy="${52 + r * 8.6}" r="1"/>`;
+          out += `<circle class="lp-hair-f" cx="${528 + c * 6}" cy="${52 + r * 8.6}" r="1"/>`;
+        }
+      }
+
+      const X0 = 42,
+        W = 476,
+        Y0 = 52,
+        RH = 29,
+        GAP = 3;
+      const layout = [
+        Array(14).fill(1),
+        Array(14).fill(1),
+        [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5],
+        [1.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.25],
+        [2.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.75],
+        [1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25, 1.25],
+      ];
+
+      layout.forEach((row, r) => {
+        const units = row.reduce((a: number, b: number) => a + b, 0);
+        const unitW = (W - GAP * (row.length - 1)) / units;
+        let x = X0;
+        const y = Y0 + r * RH;
+        row.forEach((u: number) => {
+          const kw = unitW * u;
+          out += `<rect class="lp-key lp-hair-f" x="${x}" y="${y}" width="${kw}" height="${RH - GAP - 2}" rx="2.5"/>`;
+          x += kw + GAP;
+        });
+      });
+
+      return out;
+    }
+
+    /* Side walls carry only their own small details — no outline strokes, so
+       they never compress into a hard dark line at grazing angles. */
+    const deckFrontSVG = `
+      <path class="lp-hair-f" d="M 258 ${DECK_H} L 258 5 L 302 5 L 302 ${DECK_H}"/>
+      <circle class="lp-accent" cx="60" cy="8" r="1.8"/>
+    `;
+
+    /* The left wall faces the camera at this angle, so it carries the real
+       port bank. SVG x maps to world y: 0 = rear of the deck, 380 = front. */
+    const deckLeftSVG = `
+      <rect class="lp-hair-s" x="96"  y="4.5" width="26" height="7" rx="3.5"/>
+      <line class="lp-hair-f" x1="100" y1="8" x2="118" y2="8"/>
+      <rect class="lp-hair-s" x="132" y="4.5" width="26" height="7" rx="3.5"/>
+      <line class="lp-hair-f" x1="136" y1="8" x2="154" y2="8"/>
+      <path class="lp-hair-s" d="M 170 4.5 L 204 4.5 L 202 11.5 L 172 11.5 Z"/>
+      <line class="lp-hair-f" x1="174" y1="8" x2="200" y2="8"/>
+      <rect class="lp-hair-s" x="216" y="6" width="26" height="4" rx="1.5"/>
+      <circle class="lp-hair-s" cx="262" cy="8" r="4.2"/>
+      <circle class="lp-hair-f" cx="262" cy="8" r="2"/>
+    `;
+
+    /* the right wall sits away from the camera — kept sparse */
+    const deckRightSVG = `
+      <rect class="lp-hair-f" x="150" y="4.5" width="26" height="7" rx="3.5"/>
+      <rect class="lp-hair-f" x="190" y="5.5" width="16" height="5" rx="2.5"/>
+    `;
+
+    /* vents belong on the rear wall, where a real machine exhausts */
+    const deckBackSVG = (() => {
+      let o = "";
+      for (let x = 120; x <= 440; x += 9) {
+        o += `<rect class="lp-hair-f" x="${x}" y="4" width="4" height="8" rx="1.5"/>`;
+      }
+      return o;
+    })();
+
+    const deckBottomSVG = `
+      <rect x="1" y="1" width="${DECK_W - 2}" height="${DECK_D - 2}" rx="9" class="lp-hair-s"/>
+      <rect x="120" y="90" width="320" height="200" rx="6" class="lp-hair-f"/>
+      <circle cx="44" cy="34" r="6" class="lp-hair-f"/>
+      <circle cx="516" cy="34" r="6" class="lp-hair-f"/>
+      <circle cx="44" cy="346" r="6" class="lp-hair-f"/>
+      <circle cx="516" cy="346" r="6" class="lp-hair-f"/>
+    `;
+
+    /* ================== lid artwork ================== */
+    const screenSVG = `
+      <rect x="1" y="1" width="${LID_W - 2}" height="${LID_D - 2}" rx="9" class="lp-hair-2"/>
+      <rect x="9" y="9" width="${LID_W - 18}" height="${LID_D - 18}" rx="6" class="lp-hair-f"/>
+      <rect x="26" y="24" width="508" height="300" rx="4" class="lp-hair-s"/>
+      <circle cx="280" cy="16" r="3.5" class="lp-hair-f"/>
+      <circle cx="280" cy="16" r="1.2" class="lp-solid"/>
+      <rect x="38" y="36" width="484" height="276" class="lp-fillp"/>
+
+      <path class="lp-hair-f" d="M 46 52 L 46 44 L 58 44"/>
+      <path class="lp-hair-f" d="M 514 52 L 514 44 L 502 44"/>
+      <path class="lp-hair-f" d="M 46 296 L 46 304 L 58 304"/>
+      <path class="lp-hair-f" d="M 514 296 L 514 304 L 502 304"/>
+
+      <g id="lp-bootLogo" transform="translate(280,148)" opacity="0">
+        <circle r="30" class="lp-hair-2"/>
+        <circle r="21" class="lp-hair-f"/>
+        <line x1="0" y1="-30" x2="0" y2="-10" class="lp-hair-2"/>
+        <line x1="-30" y1="0" x2="-40" y2="0" class="lp-hair-f"/>
+        <line x1="30" y1="0" x2="40" y2="0" class="lp-hair-f"/>
+      </g>
+
+      <g id="lp-progressGroup" opacity="0">
+        <rect x="190" y="222" width="180" height="7" class="lp-hair-s"/>
+        <rect id="lp-progressBar" x="191" y="223" width="0" height="5" class="lp-accent"/>
+        <line class="lp-hair-f" x1="190" y1="235" x2="190" y2="240"/>
+        <line class="lp-hair-f" x1="280" y1="235" x2="280" y2="240"/>
+        <line class="lp-hair-f" x1="370" y1="235" x2="370" y2="240"/>
+      </g>
+
+      <text id="lp-statusText" x="280" y="258" text-anchor="middle" class="lp-lbl" letter-spacing="2" opacity="0">POST / MEM / DISK</text>
+
+      <g id="lp-desktop" opacity="0">
+        <line class="lp-hair-f" x1="38" y1="58" x2="522" y2="58"/>
+        <rect x="48" y="44" width="30" height="9" class="lp-hair-f"/>
+        <rect x="86" y="44" width="20" height="9" class="lp-hair-f"/>
+        <rect x="466" y="44" width="16" height="9" class="lp-hair-f"/>
+        <rect x="490" y="44" width="22" height="9" class="lp-hair-f"/>
+
+        <g id="lp-iconRow">
+          <g class="lp-icon" transform="translate(56,78)" opacity="0">
+            <rect width="34" height="28" class="lp-hair-s"/>
+            <line class="lp-hair-f" x1="0" y1="8" x2="34" y2="8"/>
+            <line class="lp-hair-f" x1="6" y1="17" x2="26" y2="17"/>
+          </g>
+          <g class="lp-icon" transform="translate(56,120)" opacity="0">
+            <circle cx="17" cy="14" r="14" class="lp-hair-s"/>
+            <line class="lp-hair-f" x1="3" y1="14" x2="31" y2="14"/>
+          </g>
+          <g class="lp-icon" transform="translate(56,162)" opacity="0">
+            <polygon points="17,0 34,28 0,28" class="lp-hair-s"/>
+          </g>
+        </g>
+
+        <g id="lp-win" opacity="0">
+          <rect x="140" y="96" width="300" height="160" class="lp-fillp"/>
+          <line class="lp-hair-s" x1="140" y1="112" x2="440" y2="112"/>
+          <circle cx="150" cy="104" r="2.8" class="lp-hair-f"/>
+          <circle cx="160" cy="104" r="2.8" class="lp-hair-f"/>
+          <circle cx="170" cy="104" r="2.8" class="lp-hair-f"/>
+          ${[220, 170, 250, 120, 205, 150, 190]
+            .map(
+              (w, i) =>
+                `<line class="lp-winline lp-hair-f" x1="154" y1="${132 + i * 16}" x2="${154 + w}" y2="${132 + i * 16}"/>`
+            )
+            .join("")}
+        </g>
+
+        <g id="lp-dock" opacity="0">
+          <rect x="188" y="278" width="184" height="22" class="lp-hair-s"/>
+          ${Array.from(
+            { length: 8 },
+            (_, i) =>
+              `<rect class="lp-hair-f" x="${197 + i * 21}" y="283" width="12" height="12" rx="2"/>`
+          ).join("")}
+        </g>
+      </g>
+    `;
+
+    const lidBackSVG = `
+      <rect x="1" y="1" width="${LID_W - 2}" height="${LID_D - 2}" rx="9" class="lp-hair-2"/>
+      <rect x="12" y="12" width="${LID_W - 24}" height="${LID_D - 24}" rx="6" class="lp-hair-f"/>
+      <circle cx="280" cy="176" r="34" class="lp-hair-s"/>
+      <circle cx="280" cy="176" r="24" class="lp-hair-f"/>
+      <line x1="280" y1="142" x2="280" y2="158" class="lp-hair-s"/>
+    `;
+
+    /* ================== assemble ================== */
+    machine.appendChild(
+      makeBox(DECK_W, DECK_D, DECK_H, {
+        top: deckTopSVG(),
+        bottom: deckBottomSVG,
+        front: deckFrontSVG,
+        back: deckBackSVG,
+        left: deckLeftSVG,
+        right: deckRightSVG,
+      })
+    );
+
+    // hinge barrel: a faceted cylinder, shaded by how far each facet tips up
+    const barrel = div("lp-barrel", {
+      left: "0px",
+      top: "0px",
+      transform: `translate3d(${(DECK_W - BARREL_L) / 2}px, ${AXIS_Y}px, ${AXIS_Z}px)`,
+    });
+
+    const FACETS = 16;
+    const facetH = (2 * Math.PI * BARREL_R) / FACETS + 0.6;
+
+    for (let i = 0; i < FACETS; i++) {
+      const a = (360 / FACETS) * i;
+      const up = Math.cos((a * Math.PI) / 180); // facet normal vs. world up
+      const tone =
+        up > 0.45
+          ? "var(--lp-face)"
+          : up > -0.3
+            ? "var(--lp-wall-1)"
+            : "var(--lp-wall-2)";
+
+      barrel.appendChild(
+        div("lp-facet", {
+          width: `${BARREL_L}px`,
+          height: `${facetH}px`,
+          left: "0px",
+          top: `${-facetH / 2}px`,
+          background: tone,
+          transform: `rotateX(${a}deg) translateZ(${BARREL_R}px)`,
+        })
+      );
+    }
+
+    [0, BARREL_L].forEach((x) => {
+      barrel.appendChild(
+        div("lp-cap", {
+          width: `${BARREL_R * 2}px`,
+          height: `${BARREL_R * 2}px`,
+          left: `${x - BARREL_R}px`,
+          top: `${-BARREL_R}px`,
+          transform: `translateX(${BARREL_R}px) rotateY(90deg)`,
+        })
+      );
+    });
+
+    machine.appendChild(barrel);
+
+    const anchor = div("lp-anchor", {
+      left: "0px",
+      top: "0px",
+      transform: `translate3d(0px, ${AXIS_Y}px, ${AXIS_Z}px)`,
+    });
+    const pivot = div("lp-pivot", { left: "0px", top: "0px" });
+    pivot.id = "lp-lidPivot";
+
+    const lid = makeBox(LID_W, LID_D, LID_H, {
+      top: screenSVG,
+      bottom: lidBackSVG,
+    });
+    lid.style.transform = `translateY(${-LID_D}px)`;
+
+    pivot.appendChild(lid);
+    anchor.appendChild(pivot);
+    machine.appendChild(anchor);
+
+    /* ================== motion ================== */
+    const CLOSED = -180; // exactly flush; anything short of this wedges open
+    const OPEN = -103;
+
+    const transient = [
+      "#lp-bootLogo",
+      "#lp-progressGroup",
+      "#lp-statusText",
+      "#lp-desktop",
+      "#lp-dock",
+      "#lp-win",
+      ".lp-icon",
+    ];
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+      .matches;
+
+    if (reduceMotion) {
+      // Skip the boot: open lid, finished desktop, no movement at all.
+      anime.set("#lp-lidPivot", { rotateX: OPEN });
+      anime.set(["#lp-desktop", "#lp-win", "#lp-dock", ".lp-icon"], {
+        opacity: 1,
+      });
+      anime.set([".lp-key", ".lp-winline"], { opacity: 1 });
+    } else {
+      anime.set("#lp-lidPivot", { rotateX: CLOSED });
+      anime.set(transient, { opacity: 0 });
+      anime.set("#lp-progressBar", { width: 0 });
+      anime.set([".lp-key", ".lp-winline"], { opacity: 0 });
+
+      const tl = anime.timeline({
+        easing: "easeInOutQuad",
+        autoplay: false,
+      });
+
+      tl.add({
+        targets: "#lp-lidPivot",
+        rotateX: [CLOSED, OPEN],
+        duration: 1800,
+        easing: "cubicBezier(0.18, 0.86, 0.22, 1)",
+      })
+        .add(
+          {
+            targets: ".lp-key",
+            opacity: [0, 1],
+            duration: 300,
+            delay: anime.stagger(7),
+            easing: "linear",
+          },
+          "-=1250"
+        )
+        .add(
+          {
+            targets: "#lp-bootLogo",
+            opacity: [0, 1],
+            scale: [0.94, 1],
+            duration: 420,
+            easing: "easeOutQuart",
+          },
+          "-=520"
+        )
+        .add({
+          targets: "#lp-bootLogo",
+          rotate: 360,
+          duration: 1800,
+          easing: "linear",
+        })
+        .add(
+          {
+            targets: ["#lp-progressGroup", "#lp-statusText"],
+            opacity: [0, 1],
+            duration: 260,
+          },
+          "-=1600"
+        )
+        .add(
+          {
+            targets: "#lp-progressBar",
+            width: 178,
+            duration: 1500,
+            easing: "linear",
+          },
+          "-=1350"
+        )
+        .add({
+          targets: ["#lp-bootLogo", "#lp-progressGroup", "#lp-statusText"],
+          opacity: 0,
+          duration: 300,
+        })
+        .add(
+          {
+            targets: "#lp-desktop",
+            opacity: [0, 1],
+            duration: 300,
+          },
+          "-=120"
+        )
+        .add({
+          targets: ".lp-icon",
+          opacity: [0, 1],
+          translateX: [-6, 0],
+          delay: anime.stagger(90),
+          duration: 340,
+          easing: "easeOutQuart",
+        })
+        .add(
+          {
+            targets: "#lp-win",
+            opacity: [0, 1],
+            scale: [0.985, 1],
+            duration: 420,
+            easing: "easeOutQuart",
+          },
+          "-=150"
+        )
+        .add(
+          {
+            targets: ".lp-winline",
+            opacity: [0, 1],
+            duration: 200,
+            delay: anime.stagger(50),
+            easing: "linear",
+          },
+          "-=200"
+        )
+        .add(
+          {
+            targets: "#lp-dock",
+            opacity: [0, 1],
+            translateY: [5, 0],
+            duration: 360,
+            easing: "easeOutQuart",
+          },
+          "-=400"
+        );
+
+      // Boots once, when the hero is actually on screen, then holds.
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            io.unobserve(entry.target);
+            tl.play();
+          });
+        },
+        { threshold: 0.2 }
+      );
+      io.observe(mount);
+    }
+  }
+</script>
